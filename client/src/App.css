@@ -1,4 +1,17 @@
-#root {
+.bg-register{
+  background-image: url('../public/assets/OPE.jpg');
+  background-size: cover;
+  margin: 0;
+  height: 100vh;
+}
+
+.Register{
+  background-image: url('../public/assets/OPE.jpg');
+  background-size: cover;
+  margin: 0;
+  height: 100vh;
+}
+/* #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -39,4 +52,4 @@
 
 .read-the-docs {
   color: #888;
-}
+} */
