@@ -1,43 +1,41 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import axios from "axios";
-// import Swal from "sweetalert2";
+import axios from "axios";
+import Swal from "sweetalert2";
 // import { GoogleLogin } from "@react-oauth/google";
 
 import { Card, Input, Checkbox, Button, Typography } from "@material-tailwind/react";
 
 export default function Register() {
+  const [form, setForm] = useState({
+    username : "",
+    password : ""
+  })
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const url = "https://server.esyaahmad.tech";
 
 
-  async function handleRegister(e) {
-    // e.preventDefault();
-    // try {
-    //   const registered = { email, password };
-    //   // const { data } = await axios.post(`${url}/register`, registered);
-    //   console.log(data);
-    //   Swal.fire({
-    //     icon: "success",
-    //     title: `${data.email} Success Registered`,
-    //   });
-    //   navigate("/login");
-    // } catch (error) {
-    //   console.log(error);
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: error.response.data.message,
-    //   });
-    // }
+  async function handleRegister(e, form) {
+    e.preventDefault()
+
+    try {
+      
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        text : error.errors[0].message,
+        title: "error",
+      });
+    }
   }
 
   function handleGithub() {
-    // Swal.fire({
-    //   icon: "error",
-    //   title: "Under Maintenance",
-    // });
+    Swal.fire({
+      icon: "error",
+      title: "Under Maintenance",
+    });
   }
 
   async function googleLogin(codeResponse) {
@@ -59,6 +57,15 @@ export default function Register() {
     // }
   }
 
+  function handleChange(e) {
+    e.preventDefault()
+    const { name, value } = e.target
+    setForm({
+      ...form,
+      [name] : value
+    })
+  }
+
   return (
     <>
     <div className="Register">
@@ -70,21 +77,21 @@ export default function Register() {
         <div className="w-full lg:w-3/5 flex flex-col items-center justify-center">
           <div className="text-center">
             <Typography variant="h2" className="font-bold mb-4">
-              Join Us Today
+              Register
             </Typography>
             <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">
-              Enter your email and password to register.
+              Enter your username and password to register.
             </Typography>
           </div>
-          <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2" onSubmit={handleRegister}>
+          <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2" onSubmit={(e) => handleRegister(e, form)}>
             <div className="mb-1 flex flex-col gap-6">
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
-                Your email
+                Your username
               </Typography>
               <Input
                 size="lg"
                 placeholder="name@mail.com"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleChange}
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
@@ -97,7 +104,7 @@ export default function Register() {
                 type="password"
                 size="lg"
                 placeholder="********"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handleChange}
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
