@@ -73,10 +73,8 @@ export default function Register() {
   console.log(form);
   return (
     <>
-    <div className="Register">
-
-      <section className="m-8 flex Register">
-        <div className="w-2/5 h-auto max-h-[660px] hidden lg:block Register">
+      <section className="m-8 flex">
+        <div className="w-2/5 h-auto max-h-[660px] hidden lg:block">
           <img src="/assets/OPE.jpg" className="h-full w-full object-cover rounded-3xl" />
         </div>
         <div className="w-full lg:w-3/5 flex flex-col items-center justify-center">
@@ -139,7 +137,6 @@ export default function Register() {
           </form>
         </div>
       </section>
-    </div>
 
       {/* <div className="relative flex flex-col justify-center h-screen overflow-hidden">
   <div className="w-full p-6 m-auto bg-white rounded-md shadow-md ring-2 ring-gray-800/50 lg:max-w-lg">
