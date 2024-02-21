@@ -1,6 +1,6 @@
 const { History, User } = require("../models/index");
 
-class historyController {
+class HistoryController {
   static async historyList(req, res, next) {
     try {
       let histories = await History.findAll(
@@ -105,4 +105,4 @@ class historyController {
     }
   }
 }
-module.exports = historyController;
+module.exports = HistoryController;

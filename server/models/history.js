@@ -11,12 +11,43 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      History.belongsTo(models.User, {foreignKey : "UserId"})
     }
   }
   History.init({
-    UserId: DataTypes.INTEGER,
-    win: DataTypes.INTEGER,
-    lose: DataTypes.INTEGER
+    UserId: {type:DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      notNull: {
+        msg: 'user id cannot be null'
+      },
+      notEmpty: {
+        msg: 'user id cannot be empty'
+      }
+    }
+  },
+    win: {type:DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'user id cannot be null'
+        },
+        notEmpty: {
+          msg: 'user id cannot be empty'
+        }
+      }
+    },
+    lose: {type:DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'user id cannot be null'
+        },
+        notEmpty: {
+          msg: 'user id cannot be empty'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'History',

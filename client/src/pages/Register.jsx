@@ -19,13 +19,18 @@ export default function Register() {
 
   async function handleRegister(e, form) {
     e.preventDefault()
-
     try {
-      
+      await axios.post('http://localhost:3000/register', form)
+      Swal.fire({
+        icon: "success",
+        text : "Your account has been registered",
+        title: "success",
+      })
+      navigate('/login')
     } catch (error) {
       Swal.fire({
         icon: "error",
-        text : error.errors[0].message,
+        text : error,
         title: "error",
       });
     }
@@ -65,7 +70,7 @@ export default function Register() {
       [name] : value
     })
   }
-
+  console.log(form);
   return (
     <>
     <div className="Register">
@@ -91,6 +96,7 @@ export default function Register() {
               <Input
                 size="lg"
                 placeholder="name@mail.com"
+                name="username"
                 onChange={handleChange}
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
@@ -104,6 +110,7 @@ export default function Register() {
                 type="password"
                 size="lg"
                 placeholder="********"
+                name="password"
                 onChange={handleChange}
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
