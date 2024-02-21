@@ -38,6 +38,7 @@ const Homepage = () => {
       </div>
     </div>
   );
+  <Outlet/>
 };
 
 export default Homepage;
