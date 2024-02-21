@@ -43,7 +43,7 @@ class UserController {
             username: user.username,
           };
           const access_token = signToken(payload);
-          res.status(200).json({ access_token });
+          res.status(200).json({ access_token, username : user.username });
         }
       }
     } catch (error) {

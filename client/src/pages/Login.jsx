@@ -73,10 +73,14 @@ export default function Login() {
 
   async function handleLogin(e, form) {
     e.preventDefault()
-
     try {
-      
+        const {data} = await axios.post('http://localhost:3000/login', form, {})
+        console.log(data);
+        localStorage.setItem('username', data.username)
+        localStorage.setItem('access_token', data.access_token)
+        navigate('/')
     } catch (error) {
+      console.log(error);
       Swal.fire({
         icon: "error",
         text : error.errors[0].message,
@@ -93,7 +97,7 @@ export default function Login() {
       [name] : value
     })
   }
-  // console.log(form);
+  console.log(form);
   return (
     <>
       <section className="m-8 flex gap-4">
@@ -102,12 +106,12 @@ export default function Login() {
             <Typography variant="h2" className="font-bold mb-4">
               Sign In
             </Typography>
-            <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal"  onSubmit={(e) => handleLogin(e, form)}>
+            <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal"  >
               Enter your email and password to Sign In.
               {/* onSubmit={handleLogin} */}
             </Typography>
           </div>
-          <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2" >
+          <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2" onSubmit={(e) => handleLogin(e, form)}>
             <div className="mb-1 flex flex-col gap-6">
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
                 Username
