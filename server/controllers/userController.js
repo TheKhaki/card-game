@@ -1,8 +1,8 @@
 const { User } = require("../models/index");
-const { validate } = require("../helpers/bcrypt");
-const { createToken } = require("../helpers/jwt");
+const { comparePassword } = require("../helpers/bcrypt");
+const { signToken } = require("../helpers/jwt");
 
-class userController {
+class UserController {
   static async register(req, res, next) {
     try {
       const { username, password } = req.body;
@@ -15,7 +15,7 @@ class userController {
       res.status(201).json({ newUser });
     } catch (error) {
       console.log(error);
-      next(error);
+      // next(error);
     }
   }
 
@@ -34,7 +34,7 @@ class userController {
       if (!user) {
         throw { name: "UserNotFound" };
       } else {
-        const validPassword = validate(password, user.password);
+        const validPassword = comparePassword(password, user.password);
         if (!validPassword) {
           throw { name: "InvalidLogin" };
         } else {
@@ -42,8 +42,8 @@ class userController {
             id: user.id,
             username: user.username,
           };
-          const access_token = createToken(payload);
-          res.status(200).json({ access_token });
+          const access_token = signToken(payload);
+          res.status(200).json({ access_token, username : user.username });
         }
       }
     } catch (error) {
@@ -53,4 +53,4 @@ class userController {
   }
 }
 
-module.exports = userController;
+module.exports = UserController;

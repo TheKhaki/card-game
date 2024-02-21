@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import axios from "axios";
-// import Swal from "sweetalert2";
+import axios from "axios";
+import Swal from "sweetalert2";
 // import { GoogleLogin } from "@react-oauth/google";
 
 import { Card, Input, Checkbox, Button, Typography } from "@material-tailwind/react";
 
 export default function Login() {
+  const [form, setForm] = useState({
+    username : "",
+    password : ""
+  })
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -67,6 +71,33 @@ export default function Login() {
     });
   }
 
+  async function handleLogin(e, form) {
+    e.preventDefault()
+    try {
+        const {data} = await axios.post('http://localhost:3000/login', form, {})
+        console.log(data);
+        localStorage.setItem('username', data.username)
+        localStorage.setItem('access_token', data.access_token)
+        navigate('/')
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        text : error.errors[0].message,
+        title: "error",
+      });
+    }
+  }
+
+  function handleChange(e) {
+    e.preventDefault()
+    const { name, value } = e.target
+    setForm({
+      ...form,
+      [name] : value
+    })
+  }
+  console.log(form);
   return (
     <>
       <section className="m-8 flex gap-4">
@@ -75,20 +106,21 @@ export default function Login() {
             <Typography variant="h2" className="font-bold mb-4">
               Sign In
             </Typography>
-            <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">
+            <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal"  >
               Enter your email and password to Sign In.
               {/* onSubmit={handleLogin} */}
             </Typography>
           </div>
-          <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2" >
+          <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2" onSubmit={(e) => handleLogin(e, form)}>
             <div className="mb-1 flex flex-col gap-6">
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
-                Your email
+                Username
               </Typography>
               <Input
                 size="lg"
-                placeholder="name@mail.com"
-                onChange={(e) => setEmail(e.target.value)}
+                name="username"
+                placeholder="bakso"
+                onChange={handleChange}
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
@@ -98,10 +130,11 @@ export default function Login() {
                 Password
               </Typography>
               <Input
+                name="password"
                 type="password"
                 size="lg"
                 placeholder="********"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handleChange}
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",

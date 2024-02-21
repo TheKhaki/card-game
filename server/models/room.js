@@ -14,7 +14,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Room.init({
-    name: DataTypes.STRING
+    name: {type:DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notNull: {
+        msg: 'name cannot be null'
+      },
+      notEmpty: {
+        msg: 'name cannot be empty'
+      }
+    }
+  }
   }, {
     sequelize,
     modelName: 'Room',
