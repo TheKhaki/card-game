@@ -21,6 +21,13 @@ const io = new Server(server, {
 let usernames = [];
 io.on("connection", (socket) => {
   // console.log(socket);
+  socket.on("username", (data) => {
+    console.log(data.player, '>>>>>>>>>>>>>>>>>>');
+    usernames.push(data.username)
+  })
+
+
+
   socket.on("join", (payload, callback) => {
     let numberOfUsersInRoom = getUsersInRoom(payload.room).length;
   
@@ -32,7 +39,7 @@ io.on("connection", (socket) => {
       usernames.push(payload.playerName);
     }
     
-    console.log(usernames);
+     console.log(usernames);
     const { error, newUser } = addUser({
       id: socket.id,
       name: numberOfUsersInRoom === 0 ? "Player 1" : "Player 2",
