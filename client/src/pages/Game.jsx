@@ -104,10 +104,10 @@ const Game = () => {
     const shuffledCards = shuffleArray(PACK_OF_CARDS);
 
     //extract first 7 elements to player1Deck
-    const player1Deck = shuffledCards.splice(0, 7);
+    const player1Deck = shuffledCards.splice(0, 1);
 
     //extract first 7 elements to player2Deck
-    const player2Deck = shuffledCards.splice(0, 7);
+    const player2Deck = shuffledCards.splice(0, 1);
 
     //extract random card from shuffledCards and check if its not an action card
     let startingCardIndex;
@@ -212,16 +212,17 @@ const Game = () => {
       console.log(player1);
       console.log(player2);
       setCurrentUser(name);
-      if (current === localStorage.username) {
         setCurrent(player2);
         setEnemy(player1);
-      } else {
-        setCurrent(player1);
-        setEnemy(player2);
-      }
+        if (current !== localStorage.username) {
+          setCurrent(player1);
+          setEnemy(player2);
+        }
 
-      // setPlayer1(current);
-      // setPlayer2(enemy);
+        if(!player2) {
+          setCurrent(localStorage.username);
+  
+        }
     });
 
     socket.on("message", (message) => {
@@ -2083,7 +2084,7 @@ const Game = () => {
                         className="player2Deck"
                         style={{ pointerEvents: "none" }}
                       >
-                        <p className="playerDeckText">{enemy}. </p>
+                        <p className="playerDeckText">{enemy} </p>
                         {player2Deck.map((item, i) => (
                           <img
                             key={i}
