@@ -315,7 +315,7 @@ a {
 .chat-box{
 	position: absolute;
 	bottom: 0px;
-	background: white;
+	background: rgb(229, 236, 157);
 	width: 355px;
 	border-radius: 5px 5px 0px 0px;
   z-index: 100;
@@ -329,11 +329,11 @@ a {
 .chat-head{
 	width: inherit;
 	height: 45px;
-	background: #2c3e50;
+	background: #f7d303;
 	border-radius: 5px 5px 0px 0px;
 }
 .chat-head h2{
-	color: white;
+	color: rgb(0, 0, 0);
 	padding-top: 5px;
 	display: inline-block;
 }
