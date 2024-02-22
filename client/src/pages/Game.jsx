@@ -6,7 +6,7 @@ import queryString from "query-string";
 // import Spinner from './Spinner'
 import Spinner from "../components/Spinner.jsx";
 import useSound from "use-sound";
-import { Outlet, useSearchParams } from "react-router-dom";
+import { Outlet, useSearchParams, useNavigate } from "react-router-dom";
 import bgMusic from "../assets/sounds/game-bg-music.mp3";
 import unoSound from "../assets/sounds/uno-sound.mp3";
 import shufflingSound from "../assets/sounds/shuffling-cards-1.mp3";
@@ -30,17 +30,21 @@ const playcard = (name) => {
 };
 
 const Game = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  console.log(searchParams.get("roomCode"));
   const data = searchParams.get("roomCode");
-  console.log(data);
-
   const [room, setRoom] = useState(data);
   const [roomFull, setRoomFull] = useState(false);
   const [users, setUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [current, setCurrent] = useState("");
+  const [enemy, setEnemy] = useState("");
+
+  function surrend() {
+    navigate("/");
+  }
 
   useEffect(() => {
     const connectionOptions = {
@@ -51,9 +55,13 @@ const Game = () => {
     };
     socket = io.connect(ENDPOINT, connectionOptions);
 
-    socket.emit("join", { room: room }, (error) => {
-      if (error) setRoomFull(true);
-    });
+    socket.emit(
+      "join",
+      { room: room, playerName: localStorage.username },
+      (error) => {
+        if (error) setRoomFull(true);
+      }
+    );
 
     //cleanup on component unmount
     return function cleanup() {
@@ -198,8 +206,21 @@ const Game = () => {
       setUsers(users);
     });
 
-    socket.on("currentUserData", ({ name }) => {
+    socket.on("currentUserData", ({ name, player1, player2 }) => {
+      console.log(name);
+      console.log(player1);
+      console.log(player2);
       setCurrentUser(name);
+      if (current === localStorage.username) {
+        setCurrent(player2);
+        setEnemy(player1);
+      } else {
+        setCurrent(player1);
+        setEnemy(player2);
+      }
+
+      // setPlayer1(current);
+      // setPlayer2(enemy);
     });
 
     socket.on("message", (message) => {
@@ -1794,7 +1815,7 @@ const Game = () => {
                         className="player2Deck"
                         style={{ pointerEvents: "none" }}
                       >
-                        <p className="playerDeckText">Player 2</p>
+                        <p className="playerDeckText">{enemy}</p>
                         {player2Deck.map((item, i) => (
                           <img
                             key={i}
@@ -1851,7 +1872,7 @@ const Game = () => {
                           turn === "Player 1" ? null : { pointerEvents: "none" }
                         }
                       >
-                        <p className="playerDeckText">Player 1</p>
+                        <p className="playerDeckText">{current}</p>
                         {player1Deck.map((item, i) => (
                           <img
                             key={i}
@@ -1922,7 +1943,7 @@ const Game = () => {
                         className="player1Deck"
                         style={{ pointerEvents: "none" }}
                       >
-                        <p className="playerDeckText">Player 1</p>
+                        <p className="playerDeckText">{current}</p>
                         {player1Deck.map((item, i) => (
                           <img
                             key={i}
@@ -1980,7 +2001,7 @@ const Game = () => {
                           turn === "Player 1" ? { pointerEvents: "none" } : null
                         }
                       >
-                        <p className="playerDeckText">Player 2</p>
+                        <p className="playerDeckText">{enemy}</p>
                         {player2Deck.map((item, i) => (
                           <img
                             key={i}
@@ -2053,7 +2074,7 @@ const Game = () => {
       )}
 
       <br />
-      <a href="/">
+      <a onClick={surrend}>
         <button className="game-button red">Surrend</button>
       </a>
     </div>
