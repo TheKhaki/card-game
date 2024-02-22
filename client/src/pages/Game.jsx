@@ -3,6 +3,7 @@ import PACK_OF_CARDS from "../utils/packOfCards";
 import shuffleArray from "../utils/shuffleArray";
 import io from "socket.io-client";
 import queryString from "query-string";
+import Swal from 'sweetalert2'
 // import Spinner from './Spinner'
 import Spinner from "../components/Spinner.jsx";
 import useSound from "use-sound";
@@ -555,7 +556,13 @@ const Game = () => {
         }
         //if no color or number match, invalid move - do not update state
         else {
-          alert("Invalid Move!");
+          Swal.fire({
+            title: "Invalid Move!",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1200,
+          });
+          // alert("Invalid Move!");
         }
         break;
       }
@@ -577,9 +584,15 @@ const Game = () => {
             //if two cards remaining check if player pressed UNO button
             //if not pressed add 2 cards as penalty
             if (player1Deck.length === 2 && !isUnoButtonPressed) {
-              alert(
-                "Oops! You forgot to press UNO. You drew 2 cards as penalty."
-              );
+              Swal.fire({
+                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                icon: "warning",
+                showConfirmButton: false,
+                timer: 1200,
+              });
+              // alert(
+              //   "Oops! You forgot to press UNO. You drew 2 cards as penalty."
+              // );
               //make a copy of drawCardPile array
               const copiedDrawCardPileArray = [...drawCardPile];
               //pull out last two elements from it
@@ -632,9 +645,15 @@ const Game = () => {
             //if two cards remaining check if player pressed UNO button
             //if not pressed add 2 cards as penalty
             if (player2Deck.length === 2 && !isUnoButtonPressed) {
-              alert(
-                "Oops! You forgot to press UNO. You drew 2 cards as penalty."
-              );
+              Swal.fire({
+                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                icon: "warning",
+                showConfirmButton: false,
+                timer: 1200,
+              });
+              // alert(
+              //   "Oops! You forgot to press UNO. You drew 2 cards as penalty."
+              // );
               //make a copy of drawCardPile array
               const copiedDrawCardPileArray = [...drawCardPile];
               //pull out last two elements from it
@@ -693,9 +712,15 @@ const Game = () => {
             //if two cards remaining check if player pressed UNO button
             //if not pressed add 2 cards as penalty
             if (player1Deck.length === 2 && !isUnoButtonPressed) {
-              alert(
-                "Oops! You forgot to press UNO. You drew 2 cards as penalty."
-              );
+              Swal.fire({
+                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                icon: "warning",
+                showConfirmButton: false,
+                timer: 1200,
+              });
+              // alert(
+              //   "Oops! You forgot to press UNO. You drew 2 cards as penalty."
+              // );
               //make a copy of drawCardPile array
               const copiedDrawCardPileArray = [...drawCardPile];
               //pull out last two elements from it
@@ -748,9 +773,15 @@ const Game = () => {
             //if two cards remaining check if player pressed UNO button
             //if not pressed add 2 cards as penalty
             if (player2Deck.length === 2 && !isUnoButtonPressed) {
-              alert(
-                "Oops! You forgot to press UNO. You drew 2 cards as penalty."
-              );
+              Swal.fire({
+                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                icon: "warning",
+                showConfirmButton: false,
+                timer: 1200,
+              });
+              // alert(
+              //   "Oops! You forgot to press UNO. You drew 2 cards as penalty."
+              // );
               //make a copy of drawCardPile array
               const copiedDrawCardPileArray = [...drawCardPile];
               //pull out last two elements from it
@@ -800,7 +831,13 @@ const Game = () => {
         }
         //if no color or number match, invalid move - do not update state
         else {
-          alert("Invalid Move!");
+          Swal.fire({
+            title: "Invalid Move!",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1200,
+          });
+          // alert("Invalid Move!");
         }
         break;
       }
@@ -828,9 +865,15 @@ const Game = () => {
             //if two cards remaining check if player pressed UNO button
             //if not pressed add 2 cards as penalty
             if (player1Deck.length === 2 && !isUnoButtonPressed) {
-              alert(
-                "Oops! You forgot to press UNO. You drew 2 cards as penalty."
-              );
+              Swal.fire({
+                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                icon: "warning",
+                showConfirmButton: false,
+                timer: 1200,
+              });
+              // alert(
+              //   "Oops! You forgot to press UNO. You drew 2 cards as penalty."
+              // );
               //pull out last two elements from drawCardPile
               const drawCard1X = copiedDrawCardPileArray.pop();
               const drawCard2X = copiedDrawCardPileArray.pop();
@@ -900,9 +943,15 @@ const Game = () => {
             //if two cards remaining check if player pressed UNO button
             //if not pressed add 2 cards as penalty
             if (player2Deck.length === 2 && !isUnoButtonPressed) {
-              alert(
-                "Oops! You forgot to press UNO. You drew 2 cards as penalty."
-              );
+              Swal.fire({
+                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                icon: "warning",
+                showConfirmButton: false,
+                timer: 1200,
+              });
+              // alert(
+              //   "Oops! You forgot to press UNO. You drew 2 cards as penalty."
+              // );
               //pull out last two elements from drawCardPile
               const drawCard1X = copiedDrawCardPileArray.pop();
               const drawCard2X = copiedDrawCardPileArray.pop();
@@ -978,9 +1027,15 @@ const Game = () => {
             //if two cards remaining check if player pressed UNO button
             //if not pressed add 2 cards as penalty
             if (player1Deck.length === 2 && !isUnoButtonPressed) {
-              alert(
-                "Oops! You forgot to press UNO. You drew 2 cards as penalty."
-              );
+              Swal.fire({
+                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                icon: "warning",
+                showConfirmButton: false,
+                timer: 1200,
+              });
+              // alert(
+              //   "Oops! You forgot to press UNO. You drew 2 cards as penalty."
+              // );
               //pull out last two elements from drawCardPile
               const drawCard1X = copiedDrawCardPileArray.pop();
               const drawCard2X = copiedDrawCardPileArray.pop();
@@ -1050,9 +1105,15 @@ const Game = () => {
             //if two cards remaining check if player pressed UNO button
             //if not pressed add 2 cards as penalty
             if (player2Deck.length === 2 && !isUnoButtonPressed) {
-              alert(
-                "Oops! You forgot to press UNO. You drew 2 cards as penalty."
-              );
+              Swal.fire({
+                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                icon: "warning",
+                showConfirmButton: false,
+                timer: 1200,
+              });
+              // alert(
+              //   "Oops! You forgot to press UNO. You drew 2 cards as penalty."
+              // );
               //pull out last two elements from drawCardPile
               const drawCard1X = copiedDrawCardPileArray.pop();
               const drawCard2X = copiedDrawCardPileArray.pop();
@@ -1113,7 +1174,13 @@ const Game = () => {
         }
         //if no color or number match, invalid move - do not update state
         else {
-          alert("Invalid Move!");
+          Swal.fire({
+            title: "Invalid Move!",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          // alert("Invalid Move!");
         }
         break;
       }
@@ -1131,9 +1198,15 @@ const Game = () => {
           //if two cards remaining check if player pressed UNO button
           //if not pressed add 2 cards as penalty
           if (player1Deck.length === 2 && !isUnoButtonPressed) {
-            alert(
-              "Oops! You forgot to press UNO. You drew 2 cards as penalty."
-            );
+            Swal.fire({
+              title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+              icon: "warning",
+              showConfirmButton: false,
+              timer: 1200,
+            });
+            // alert(
+            //   "Oops! You forgot to press UNO. You drew 2 cards as penalty."
+            // );
             //make a copy of drawCardPile array
             const copiedDrawCardPileArray = [...drawCardPile];
             //pull out last two elements from it
@@ -1192,9 +1265,15 @@ const Game = () => {
           //if two cards remaining check if player pressed UNO button
           //if not pressed add 2 cards as penalty
           if (player2Deck.length === 2 && !isUnoButtonPressed) {
-            alert(
-              "Oops! You forgot to press UNO. You drew 2 cards as penalty."
-            );
+            Swal.fire({
+              title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+              icon: "warning",
+              showConfirmButton: false,
+              timer: 1200,
+            });
+            // alert(
+            //   "Oops! You forgot to press UNO. You drew 2 cards as penalty."
+            // );
             //make a copy of drawCardPile array
             const copiedDrawCardPileArray = [...drawCardPile];
             //pull out last two elements from it
@@ -1268,9 +1347,15 @@ const Game = () => {
             //if two cards remaining check if player pressed UNO button
             //if not pressed add 2 cards as penalty
             if (player1Deck.length === 2 && !isUnoButtonPressed) {
-              alert(
-                "Oops! You forgot to press UNO. You drew 2 cards as penalty."
-              );
+              Swal.fire({
+                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                icon: "warning",
+                showConfirmButton: false,
+                timer: 1200,
+              });
+              // alert(
+              //   "Oops! You forgot to press UNO. You drew 2 cards as penalty."
+              // );
               //pull out last two elements from drawCardPile
               const drawCard1X = copiedDrawCardPileArray.pop();
               const drawCard2X = copiedDrawCardPileArray.pop();
@@ -1376,9 +1461,15 @@ const Game = () => {
             //if two cards remaining check if player pressed UNO button
             //if not pressed add 2 cards as penalty
             if (player2Deck.length === 2 && !isUnoButtonPressed) {
-              alert(
-                "Oops! You forgot to press UNO. You drew 2 cards as penalty."
-              );
+              Swal.fire({
+                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                icon: "warning",
+                showConfirmButton: false,
+                timer: 1200,
+              });
+              // alert(
+              //   "Oops! You forgot to press UNO. You drew 2 cards as penalty."
+              // );
               //pull out last two elements from drawCardPile
               const drawCard1X = copiedDrawCardPileArray.pop();
               const drawCard2X = copiedDrawCardPileArray.pop();
@@ -1465,7 +1556,13 @@ const Game = () => {
           drawCard === "skipB" ||
           drawCard === "skipY")
       ) {
-        alert(`You drew ${drawCard}. It was played for you.`);
+        Swal.fire({
+          title: `You drew ${drawCard}. It was played for you.`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1200,
+        });
+        // alert(`You drew ${drawCard}. It was played for you.`);
         !isSoundMuted && playShufflingSound();
         //send new state to server
         socket.emit("updateGameState", {
@@ -1485,7 +1582,13 @@ const Game = () => {
           drawCard === "D2B" ||
           drawCard === "D2Y")
       ) {
-        alert(`You drew ${drawCard}. It was played for you.`);
+        Swal.fire({
+          title: `You drew ${drawCard}. It was played for you.`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1200,
+        });
+        // alert(`You drew ${drawCard}. It was played for you.`);
         //remove 2 new cards from drawCardPile and add them to player2's deck (immutably)
         //make a copy of drawCardPile array
         const copiedDrawCardPileArray = [...drawCardPile];
@@ -1511,8 +1614,44 @@ const Game = () => {
           drawCardPile: [...copiedDrawCardPileArray],
         });
       } else if (drawCard === "W") {
-        alert(`You drew ${drawCard}. It was played for you.`);
+        Swal.fire({
+          title: `You drew ${drawCard}. It was played for you.`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1200,
+        });
+        // alert(`You drew ${drawCard}. It was played for you.`);
         //ask for new color
+        // const inputOptions = new Promise((resolve) => {
+        //   setTimeout(() => {
+        //     resolve({
+        //       "R": "Red",
+        //       "G": "Green",
+        //       "B": "Blue",
+        //       "Y": "Yellow",
+        //     });
+        //   }, 1000);
+        // });
+        // let newColor;
+        // async function pickColor() {
+        //   const { value: color } = await Swal.fire({
+        //     title: "Select color",
+        //     input: "radio",
+        //     inputOptions,
+        //     inputValidator: (value) => {
+        //       if (!value) {
+        //         return "You need to choose something!";
+        //       }
+        //     }
+        //   });
+        //   console.log(color);
+        //   if (color) {
+        //     Swal.fire({ html: `You selected: ${color}` });
+        //     newColor = color
+        //   }
+        // }
+        // pickColor()
+        
         const newColor = prompt(
           "Enter first letter of new color (R/G/B/Y)"
         ).toUpperCase();
@@ -1530,8 +1669,43 @@ const Game = () => {
           drawCardPile: [...copiedDrawCardPileArray],
         });
       } else if (drawCard === "D4W") {
-        alert(`You drew ${drawCard}. It was played for you.`);
+        Swal.fire({
+          title: `You drew ${drawCard}. It was played for you.`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1200,
+        });
+        // alert(`You drew ${drawCard}. It was played for you.`);
         //ask for new color
+        // const inputOptions = new Promise((resolve) => {
+        //   setTimeout(() => {
+        //     resolve({
+        //       "R": "Red",
+        //       "G": "Green",
+        //       "B": "Blue",
+        //       "Y": "Yellow",
+        //     });
+        //   }, 1000);
+        // });
+        // let newColor;
+        // async function pickColor() {
+        //   const { value: color } = await Swal.fire({
+        //     title: "Select color",
+        //     input: "radio",
+        //     inputOptions,
+        //     inputValidator: (value) => {
+        //       if (!value) {
+        //         return "You need to choose something!";
+        //       }
+        //     }
+        //   });
+        //   console.log(color);
+        //   if (color) {
+        //     Swal.fire({ html: `You selected: ${color}` });
+        //     newColor = color
+        //   }
+        // }
+        // pickColor()
         const newColor = prompt(
           "Enter first letter of new color (R/G/B/Y)"
         ).toUpperCase();
@@ -1569,7 +1743,13 @@ const Game = () => {
         numberOfDrawnCard === currentNumber ||
         colorOfDrawnCard === currentColor
       ) {
-        alert(`You drew ${drawCard}. It was played for you.`);
+        Swal.fire({
+          title: `You drew ${drawCard}. It was played for you.`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1200,
+        });
+        // alert(`You drew ${drawCard}. It was played for you.`);
         !isSoundMuted && playShufflingSound();
         //send new state to server
         socket.emit("updateGameState", {
@@ -1614,7 +1794,13 @@ const Game = () => {
           drawCard === "skipB" ||
           drawCard === "skipY")
       ) {
-        alert(`You drew ${drawCard}. It was played for you.`);
+        Swal.fire({
+          title: `You drew ${drawCard}. It was played for you.`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1200,
+        });
+        // alert(`You drew ${drawCard}. It was played for you.`);
         !isSoundMuted && playShufflingSound();
         //send new state to server
         socket.emit("updateGameState", {
@@ -1634,7 +1820,13 @@ const Game = () => {
           drawCard === "D2B" ||
           drawCard === "D2Y")
       ) {
-        alert(`You drew ${drawCard}. It was played for you.`);
+        Swal.fire({
+          title: `You drew ${drawCard}. It was played for you.`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1200,
+        });
+        // alert(`You drew ${drawCard}. It was played for you.`);
         //remove 2 new cards from drawCardPile and add them to player1's deck (immutably)
         //make a copy of drawCardPile array
         const copiedDrawCardPileArray = [...drawCardPile];
@@ -1660,8 +1852,43 @@ const Game = () => {
           drawCardPile: [...copiedDrawCardPileArray],
         });
       } else if (drawCard === "W") {
-        alert(`You drew ${drawCard}. It was played for you.`);
+        Swal.fire({
+          title: `You drew ${drawCard}. It was played for you.`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1200,
+        });
+        // alert(`You drew ${drawCard}. It was played for you.`);
         //ask for new color
+        // const inputOptions = new Promise((resolve) => {
+        //   setTimeout(() => {
+        //     resolve({
+        //       "R": "Red",
+        //       "G": "Green",
+        //       "B": "Blue",
+        //       "Y": "Yellow",
+        //     });
+        //   }, 1000);
+        // });
+        // let newColor;
+        // async function pickColor() {
+        //   const { value: color } = await Swal.fire({
+        //     title: "Select color",
+        //     input: "radio",
+        //     inputOptions,
+        //     inputValidator: (value) => {
+        //       if (!value) {
+        //         return "You need to choose something!";
+        //       }
+        //     }
+        //   });
+        //   console.log(color);
+        //   if (color) {
+        //     Swal.fire({ html: `You selected: ${color}` });
+        //     newColor = color
+        //   }
+        // }
+        // pickColor()
         const newColor = prompt(
           "Enter first letter of new color (R/G/B/Y)"
         ).toUpperCase();
@@ -1679,8 +1906,43 @@ const Game = () => {
           drawCardPile: [...copiedDrawCardPileArray],
         });
       } else if (drawCard === "D4W") {
-        alert(`You drew ${drawCard}. It was played for you.`);
+        Swal.fire({
+          title: `You drew ${drawCard}. It was played for you.`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1200,
+        });
+        // alert(`You drew ${drawCard}. It was played for you.`);
         //ask for new color
+        // const inputOptions = new Promise((resolve) => {
+        //   setTimeout(() => {
+        //     resolve({
+        //       "R": "Red",
+        //       "G": "Green",
+        //       "B": "Blue",
+        //       "Y": "Yellow",
+        //     });
+        //   }, 1000);
+        // });
+        // let newColor;
+        // async function pickColor() {
+        //   const { value: color } = await Swal.fire({
+        //     title: "Select color",
+        //     input: "radio",
+        //     inputOptions,
+        //     inputValidator: (value) => {
+        //       if (!value) {
+        //         return "You need to choose something!";
+        //       }
+        //     }
+        //   });
+        //   console.log(color);
+        //   if (color) {
+        //     Swal.fire({ html: `You selected: ${color}` });
+        //     newColor = color
+        //   }
+        // }
+        // pickColor()
         const newColor = prompt(
           "Enter first letter of new color (R/G/B/Y)"
         ).toUpperCase();
@@ -1718,7 +1980,13 @@ const Game = () => {
         numberOfDrawnCard === currentNumber ||
         colorOfDrawnCard === currentColor
       ) {
-        alert(`You drew ${drawCard}. It was played for you.`);
+        Swal.fire({
+          title: `You drew ${drawCard}. It was played for you.`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1200,
+        });
+        // alert(`You drew ${drawCard}. It was played for you.`);
         !isSoundMuted && playShufflingSound();
         //send new state to server
         socket.emit("updateGameState", {
@@ -1759,17 +2027,17 @@ const Game = () => {
             <h1>Game Code: {room}</h1>
             <span>
               <button
-                className="game-button green"
+                className="game-button orange"
                 onClick={() => setSoundMuted(!isSoundMuted)}
               >
                 {isSoundMuted ? (
-                  <span className="material-icons">volume_off</span>
+                  <span className="material-icons"><img src="../assets/sound-off.png" className="size-6"alt="" /></span>
                 ) : (
-                  <span className="material-icons">volume_up</span>
+                  <span className="material-icons"><img src="../assets/sound-on.png" className="size-6"alt="" /></span>
                 )}
               </button>
               <button
-                className="game-button green"
+                className="game-button orange"
                 onClick={() => {
                   if (isMusicMuted) playBBgMusic();
                   else pause();
@@ -1777,9 +2045,9 @@ const Game = () => {
                 }}
               >
                 {isMusicMuted ? (
-                  <span className="material-icons">music_off</span>
+                  <span className="material-icons flex"><img src="../assets/sound-off.png" className="size-6 mr-2"alt="" />music off</span>
                 ) : (
-                  <span className="material-icons">music_note</span>
+                  <span className="material-icons flex"><img src="../assets/sound-on.png" className="size-6 mr-2"alt="" />music on</span>
                 )}
               </button>
             </span>
@@ -1790,7 +2058,7 @@ const Game = () => {
             <h1 className="topInfoText">Player 1 has left the game.</h1>
           )}
           {users.length === 1 && currentUser === "Player 1" && (
-            <h1 className="topInfoText">
+            <h1 className="topInfoText flex justify-center text-black">
               Waiting for Player 2 to join the game.
             </h1>
           )}
@@ -1836,6 +2104,7 @@ const Game = () => {
                         <button
                           disabled={turn !== "Player 1"}
                           onClick={onCardDrawnHandler}
+                          className="text-black"
                         >
                           <img
                             src="../assets/draw-stack.png"
@@ -1883,23 +2152,30 @@ const Game = () => {
                         ))}
                       </div>
                       <div className="chatBoxWrapper">
-                        <div className="chat-box chat-box-player1">
-                          <div className="chat-head">
-                            <h2>Chat Box</h2>
+                        <div className="chat-box chat-box-player2">
+                          <div className="chat-head flex justify-between">
+                            <h2 className="mx-4 text-black">Chat Opponent</h2>
                             {!isChatBoxHidden ? (
-                              <span
+                              <button
                                 onClick={toggleChatBox}
-                                className="material-icons"
+                                className="material-icons mx-4"
                               >
-                                keyboard_arrow_down
-                              </span>
+                                <img
+                            src="../assets/arrow-up.png"
+                            className="size-6 mx-4"
+                          />
+                                
+                              </button>
                             ) : (
-                              <span
+                              <button
                                 onClick={toggleChatBox}
-                                className="material-icons"
-                              >
-                                keyboard_arrow_up
-                              </span>
+                                className="material-icons "
+                              > <img
+                              src="../assets/arrow-up.png"
+                              className="size-6 mx-4"
+                            />
+                               
+                              </button>
                             )}
                           </div>
                           <div className="chat-body">
@@ -1962,9 +2238,9 @@ const Game = () => {
                         }
                       >
                         <button
-                          className=""
                           disabled={turn !== "Player 2"}
                           onClick={onCardDrawnHandler}
+                          className="text-black"
                         >
                           <img
                             src="../assets/draw-stack.png"
@@ -2013,22 +2289,29 @@ const Game = () => {
                       </div>
                       <div className="chatBoxWrapper">
                         <div className="chat-box chat-box-player2">
-                          <div className="chat-head">
-                            <h2>Chat Box</h2>
+                          <div className="chat-head flex justify-between">
+                            <h2 className="mx-4 text-black">Chat Opponent</h2>
                             {!isChatBoxHidden ? (
-                              <span
+                              <button
                                 onClick={toggleChatBox}
-                                className="material-icons"
+                                className="material-icons mx-4"
                               >
-                                keyboard_arrow_down
-                              </span>
+                                <img
+                            src="../assets/arrow-up.png"
+                            className="size-6 mx-4"
+                          />
+                                
+                              </button>
                             ) : (
-                              <span
+                              <button
                                 onClick={toggleChatBox}
-                                className="material-icons"
-                              >
-                                keyboard_arrow_up
-                              </span>
+                                className="material-icons "
+                              > <img
+                              src="../assets/arrow-up.png"
+                              className="size-6 mx-4"
+                            />
+                               
+                              </button>
                             )}
                           </div>
                           <div className="chat-body">
@@ -2074,9 +2357,13 @@ const Game = () => {
       )}
 
       <br />
-      <a onClick={surrend}>
-        <button className="game-button red">Surrend</button>
+
+      <div className="flex justify-center">
+      <a href="/">
+        <button className=""><img className="w-24 h-16 mx-auto"src="../assets/exit-icon.png" alt="" /></button>
       </a>
+
+      </div>
     </div>
   );
 };

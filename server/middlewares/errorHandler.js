@@ -1,69 +1,71 @@
-const errorHandler = (err, req, res, next) => {
-    let status = 500
-    let message = "Internal Server Error"
-
-    if (err.name === 'LoginError') {
-        status = 401
-        message = 'Username/Password salah'
+const errorHandler = (error, req, res, next) => {
+    let status = 500;
+    let message = "Internal Server Error";
+    console.log(error);
+  
+    if (
+      error.name === "SequelizeValidationError" ||
+      error.name === "ValidationErrorItem" ||
+      error.name === "SequelizeUniqueConstraintError"
+    ) {
+      status = 400;
+      message = error.errors.map((err) => err.message)[0];
+    }
+  
+    if (error.name === "ForeignKeyConstraintError") {
+      status = 400;
+      message = "Data does not meet Foreign Key Requirements";
+    }
+    if (error.name === "SequelizeDatabaseError") {
+      status = 400;
+      message = "Invalid Data Type";
+    }
+  
+    if (error.name === "ReqUser") {
+      status = 400;
+      message = "Username is required!";
+    }
+    if (error.name === "ReqPass") {
+      status = 400;
+      message = "Password is required!";
+    }
+  
+    if (error.name === "InvalidLogin") {
+      status = 401;
+      message = "Invalid Username or Password";
+    }
+  
+    if (error.name === "Unauthorized") {
+      status = 401;
+      message = "Authentication Error, please login first!";
+    }
+  
+    if (error.name === "JsonWebTokenError") {
+      status = 401;
+      message = "Authentication Error, invalid token";
+    }
+  
+    if (error.name === "Forbidden") {
+      status = 403;
+      message = "You don't have access";
+    }
+  
+    if (error.name === "NotFound") {
+      status = 404;
+      message = `Data not found`;
+    }
+  
+    if (error.name === "UserNotFound") {
+      status = 404;
+      message = `Username not found`;
     }
 
-    if (err.name == 'Unauthorized') {
-        status = 401
-        message = "Unauthorized"
+    if (error.name === "ReqNameRoom") {
+      status = 400;
+      message = `Error`;
     }
-
-    if (err.name == 'JsonWebTokenError') {
-        status = 401
-        message = 'Unauthorized'
-    }
-
-    if (err.name == "NotFound") {
-        status = 404
-        message = "Not Found"
-    }
-
-    if(err.name === "SequelizeValidationError") {
-        status = 400
-        message = err.errors[0].message
-    } 
-
-    if(err.name === "SequelizeUniqueConstraintError") {
-        status = 400
-        message = "email already taken"
-    }
-
-    if(err.name === "LoginError") {
-        status = 401
-        message = "Invalid Email / Password"
-    }
-    
-    if(err.name === "Forbidden"){
-        status = 403
-        message = "Forbidden"
-    }
-
-    if(err.name === "SequelizeDatabaseError") {
-        status = 400
-        message = "Invalid Data Type"
-    }
-
-    if(err.name === "ForeignKeyConstraintError") {
-        status = 400
-        message = "Foreign key error"
-    }
-
-    if(err.name === "EmailLoginError") {
-        status = 400
-        message = "Email Can't be empty"
-    }
-    if(err.name === "PasswordLoginError") {
-        status = 400
-        message = "Password Can't be empty"
-    }
-
-    res.status(status).json({
-        message
-    })
-}
-
-module.exports = errorHandler
+  
+    res.status(status).json({ message });
+  };
+  
+  module.exports = errorHandler;
