@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
       player2: usernames[1],
     });
     callback();
-    user = [];
+
   });
 
   socket.on("initGameState", (gameState) => {

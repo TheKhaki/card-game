@@ -10,7 +10,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87); */
-  background-color: #ffffff;
+  background-color: #ffdd00;
 
   /* font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -149,8 +149,10 @@ a {
 }
 
 .playerDeckText {
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin: 0 20px;
+  color: black;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 /* Game.js Middle Row */

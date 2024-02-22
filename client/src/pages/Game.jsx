@@ -2083,7 +2083,7 @@ const Game = () => {
                         className="player2Deck"
                         style={{ pointerEvents: "none" }}
                       >
-                        <p className="playerDeckText">{enemy}</p>
+                        <p className="playerDeckText">{enemy}. </p>
                         {player2Deck.map((item, i) => (
                           <img
                             key={i}
@@ -2141,7 +2141,7 @@ const Game = () => {
                           turn === "Player 1" ? null : { pointerEvents: "none" }
                         }
                       >
-                        <p className="playerDeckText">{current}</p>
+                        <p className="playerDeckText">{current} </p>
                         {player1Deck.map((item, i) => (
                           <img
                             key={i}
@@ -2219,7 +2219,7 @@ const Game = () => {
                         className="player1Deck"
                         style={{ pointerEvents: "none" }}
                       >
-                        <p className="playerDeckText">{current}</p>
+                        <p className="playerDeckText">{current} </p>
                         {player1Deck.map((item, i) => (
                           <img
                             key={i}
@@ -2277,7 +2277,7 @@ const Game = () => {
                           turn === "Player 1" ? { pointerEvents: "none" } : null
                         }
                       >
-                        <p className="playerDeckText">{enemy}</p>
+                        <p className="playerDeckText">{enemy} </p>
                         {player2Deck.map((item, i) => (
                           <img
                             key={i}
@@ -2360,7 +2360,7 @@ const Game = () => {
 
       <div className="flex justify-center">
       <a href="/">
-        <button className=""><img className="w-24 h-16 mx-auto"src="../assets/exit-icon.png" alt="" /></button>
+        <button className="" onClick={() => socket.emit('disconnected')}><img className="w-24 h-16 mx-auto"src="../assets/exit-icon.png" alt="" /></button>
       </a>
 
       </div>
