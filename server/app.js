@@ -21,16 +21,16 @@ const io = new Server(server, {
 let usernames = [];
 io.on("connection", (socket) => {
   // console.log(socket);
-  socket.on("username", (data) => {
-    console.log(data.player, '>>>>>>>>>>>>>>>>>>');
-    usernames.push(data.username)
-  })
-
-
+  socket.on("player", (data) => {
+    if (usernames.includes(data) === false) {
+      usernames.push(data);
+    }
+    console.log(usernames, "<<<<<<<<<<<<<<");
+  });
 
   socket.on("join", (payload, callback) => {
     let numberOfUsersInRoom = getUsersInRoom(payload.room).length;
-  
+
     if (usernames.length === 0) {
       usernames.push(payload.playerName);
     }
@@ -38,8 +38,8 @@ io.on("connection", (socket) => {
     if (usernames.includes(payload.playerName) === false) {
       usernames.push(payload.playerName);
     }
-    
-     console.log(usernames);
+
+    console.log(usernames);
     const { error, newUser } = addUser({
       id: socket.id,
       name: numberOfUsersInRoom === 0 ? "Player 1" : "Player 2",
@@ -65,7 +65,6 @@ io.on("connection", (socket) => {
       usernames = [];
     }
     callback();
-
   });
 
   socket.on("initGameState", (gameState) => {
@@ -88,13 +87,16 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnected", () => {
-    usernames = [];
     const user = removeUser(socket.id);
     if (user)
       io.to(user.room).emit("roomData", {
         room: user.room,
         users: getUsersInRoom(user.room),
       });
+
+    if (usernames.includes(user.name) === false) {
+      usernames.push(user.name);
+    }
   });
 });
 
