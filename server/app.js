@@ -18,12 +18,15 @@ const io = new Server(server, {
     origin: "http://localhost:5173",
   },
 });
-
+let usernames = [];
 io.on("connection", (socket) => {
-  console.log(socket);
+  // console.log(socket);
   socket.on("join", (payload, callback) => {
     let numberOfUsersInRoom = getUsersInRoom(payload.room).length;
-
+    console.log(payload.playerName, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+    console.log(payload.playerName, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    usernames.push(payload.playerName);
+    console.log(usernames);
     const { error, newUser } = addUser({
       id: socket.id,
       name: numberOfUsersInRoom === 0 ? "Player 1" : "Player 2",
@@ -38,8 +41,16 @@ io.on("connection", (socket) => {
       room: newUser.room,
       users: getUsersInRoom(newUser.room),
     });
-    socket.emit("currentUserData", { name: newUser.name });
+
+    console.log(usernames[0]);
+    console.log(usernames[1]);
+    socket.emit("currentUserData", {
+      name: newUser.name,
+      player1: usernames[0],
+      player2: usernames[1],
+    });
     callback();
+    user = [];
   });
 
   socket.on("initGameState", (gameState) => {
@@ -62,6 +73,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnected", () => {
+    usernames = [];
     const user = removeUser(socket.id);
     if (user)
       io.to(user.room).emit("roomData", {
