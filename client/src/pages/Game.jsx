@@ -4,6 +4,7 @@ import shuffleArray from "../utils/shuffleArray";
 import io from "socket.io-client";
 import queryString from "query-string";
 import Swal from 'sweetalert2'
+import axios from "axios";
 // import Spinner from './Spinner'
 import Spinner from "../components/Spinner.jsx";
 import useSound from "use-sound";
@@ -104,10 +105,10 @@ const Game = () => {
     const shuffledCards = shuffleArray(PACK_OF_CARDS);
 
     //extract first 7 elements to player1Deck
-    const player1Deck = shuffledCards.splice(0, 7);
+    const player1Deck = shuffledCards.splice(0, 1);
 
     //extract first 7 elements to player2Deck
-    const player2Deck = shuffledCards.splice(0, 7);
+    const player2Deck = shuffledCards.splice(0, 1);
 
     //extract random card from shuffledCards and check if its not an action card
     let startingCardIndex;
@@ -212,16 +213,17 @@ const Game = () => {
       console.log(player1);
       console.log(player2);
       setCurrentUser(name);
-      if (current === localStorage.username) {
         setCurrent(player2);
         setEnemy(player1);
-      } else {
-        setCurrent(player1);
-        setEnemy(player2);
-      }
+        if (current !== localStorage.username) {
+          setCurrent(player1);
+          setEnemy(player2);
+        }
 
-      // setPlayer1(current);
-      // setPlayer2(enemy);
+        if(!player2) {
+          setCurrent(localStorage.username);
+  
+        }
     });
 
     socket.on("message", (message) => {
@@ -238,7 +240,25 @@ const Game = () => {
   };
 
   const checkWinner = (arr, player) => {
-    return arr.length === 1 ? player : "";
+    // return arr.length === 1 ? player : "";
+        if(player == "Player 2") {
+      // let data
+       axios.post('http://localhost:3000/history',{win : 1, lose : 0, name : enemy},{
+        headers : { Authorization : `Bearer ${localStorage.access_token}`}
+      })
+       axios.post('http://localhost:3000/history',{win : 0, lose : 1, name : current},{
+        headers : { Authorization : `Bearer ${localStorage.access_token}`}
+      })
+      return arr.length === 1 ? enemy : "";
+    } else if (player == "Player 1"){
+       axios.post('http://localhost:3000/history',{win : 1, lose : 0, name : current},{
+        headers : { Authorization : `Bearer ${localStorage.access_token}`}
+      })
+       axios.post('http://localhost:3000/history',{win : 0, lose : 1, name : enemy},{
+        headers : { Authorization : `Bearer ${localStorage.access_token}`}
+      })
+      return arr.length === 1 ? current : "";
+    }
   };
 
   const toggleChatBox = () => {
@@ -2083,7 +2103,7 @@ const Game = () => {
                         className="player2Deck"
                         style={{ pointerEvents: "none" }}
                       >
-                        <p className="playerDeckText">{enemy}</p>
+                        <p className="playerDeckText">{enemy} </p>
                         {player2Deck.map((item, i) => (
                           <img
                             key={i}
@@ -2141,7 +2161,7 @@ const Game = () => {
                           turn === "Player 1" ? null : { pointerEvents: "none" }
                         }
                       >
-                        <p className="playerDeckText">{current}</p>
+                        <p className="playerDeckText">{current} </p>
                         {player1Deck.map((item, i) => (
                           <img
                             key={i}
@@ -2219,7 +2239,7 @@ const Game = () => {
                         className="player1Deck"
                         style={{ pointerEvents: "none" }}
                       >
-                        <p className="playerDeckText">{current}</p>
+                        <p className="playerDeckText">{current} </p>
                         {player1Deck.map((item, i) => (
                           <img
                             key={i}
@@ -2277,7 +2297,7 @@ const Game = () => {
                           turn === "Player 1" ? { pointerEvents: "none" } : null
                         }
                       >
-                        <p className="playerDeckText">{enemy}</p>
+                        <p className="playerDeckText">{enemy} </p>
                         {player2Deck.map((item, i) => (
                           <img
                             key={i}
@@ -2360,7 +2380,7 @@ const Game = () => {
 
       <div className="flex justify-center">
       <a href="/">
-        <button className=""><img className="w-24 h-16 mx-auto"src="../assets/exit-icon.png" alt="" /></button>
+        <button className="" onClick={() => socket.emit('disconnected')}><img className="w-24 h-16 mx-auto"src="../assets/exit-icon.png" alt="" /></button>
       </a>
 
       </div>

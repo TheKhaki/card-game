@@ -103,7 +103,7 @@ export default function Login() {
       <section className="m-8 flex gap-4">
         <div className="w-full lg:w-3/5 mt-0">
           <div className="text-center">
-            <Typography variant="h2" className="font-bold mb-4">
+            <Typography variant="h2" className="font-bold mb-4 text-black">
               Sign In
             </Typography>
             <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal"  >
@@ -146,11 +146,9 @@ export default function Login() {
               Sign In
             </Button>
 
-            <div className="flex items-center justify-between gap-2 mt-6">
-              <Typography variant="small" className="font-medium text-gray-900">
-                <a href="#">Forgot Password</a>
-              </Typography>
-            </div>
+         <br />
+         <br />
+         <br />
             <div className="space-y-4 mt-8">
               {/* <Button size="lg" color="white" className="flex items-center gap-2 justify-center shadow-md" fullWidth>
                 <GoogleLogin onSuccess={googleLogin} />

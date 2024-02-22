@@ -23,9 +23,15 @@ io.on("connection", (socket) => {
   // console.log(socket);
   socket.on("join", (payload, callback) => {
     let numberOfUsersInRoom = getUsersInRoom(payload.room).length;
-    console.log(payload.playerName, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-    console.log(payload.playerName, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    usernames.push(payload.playerName);
+  
+    if (usernames.length === 0) {
+      usernames.push(payload.playerName);
+    }
+
+    if (usernames.includes(payload.playerName) === false) {
+      usernames.push(payload.playerName);
+    }
+    
     console.log(usernames);
     const { error, newUser } = addUser({
       id: socket.id,
@@ -42,15 +48,17 @@ io.on("connection", (socket) => {
       users: getUsersInRoom(newUser.room),
     });
 
-    console.log(usernames[0]);
-    console.log(usernames[1]);
     socket.emit("currentUserData", {
       name: newUser.name,
       player1: usernames[0],
       player2: usernames[1],
     });
+
+    if (usernames.length > 3) {
+      usernames = [];
+    }
     callback();
-    user = [];
+
   });
 
   socket.on("initGameState", (gameState) => {

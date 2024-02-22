@@ -79,7 +79,7 @@ export default function Register() {
         </div>
         <div className="w-full lg:w-3/5 flex flex-col items-center justify-center">
           <div className="text-center">
-            <Typography variant="h2" className="font-bold mb-4">
+            <Typography variant="h2" className="font-bold mb-4 text-black">
               Register
             </Typography>
             <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">
