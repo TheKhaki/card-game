@@ -3,21 +3,21 @@ const { History, User } = require("../models/index");
 class HistoryController {
   static async historyList(req, res, next) {
     try {
-      let histories = await History.findAll(
-        {
-          include: {
-            model: User,
-            attributes: ["id", "email"],
-          },
-          attributes: ["id", "win", "lose"],
-        },
-        { order: [["id", "ASC"]] }
+      const {userId} = req.loginInfo
+      let user = await User.findOne(
+        { where: {id:userId}}
       );
-      if (!histories) {
-        throw { name: "NotFound" };
-      }
 
-      res.status(200).json({ histories });
+      let history = await History.findOne(
+        { where: {UserId:user.id}}
+      );
+
+        // console.log(user, '====', history);
+      // if (!histories) {
+      //   throw { name: "NotFound" };
+      // }
+
+      res.status(200).json({ history });
     } catch (error) {
       next(error);
     }
@@ -38,8 +38,8 @@ class HistoryController {
 
   static async addHistory(req, res, next) {
     try {
-      let { win, lose } = req.body;
-      const { UserId } = req.loginInfo;
+      let { win, lose, name } = req.body;
+      // const { UserId } = req.loginInfo;
 
       if (win) {
         win = +win;
@@ -53,7 +53,7 @@ class HistoryController {
         lose = 0;
       }
 
-      const user = await User.findByPk(UserId);
+      const user = await User.findOne({where : { username : name}});
       if (!user) {
         throw { name: "NotFound" };
       }
@@ -62,7 +62,7 @@ class HistoryController {
         include: {
           model: User,
           where: {
-            id: UserId,
+            id: user.id,
           },
         },
       });
@@ -70,7 +70,7 @@ class HistoryController {
         const newHistory = await History.create({
           win,
           lose,
-          UserId,
+          UserId : user.id,
         });
 
         res.status(201).json({ newHistory });

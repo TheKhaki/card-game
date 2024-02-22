@@ -4,6 +4,7 @@ import shuffleArray from "../utils/shuffleArray";
 import io from "socket.io-client";
 import queryString from "query-string";
 import Swal from 'sweetalert2'
+import axios from "axios";
 // import Spinner from './Spinner'
 import Spinner from "../components/Spinner.jsx";
 import useSound from "use-sound";
@@ -239,7 +240,25 @@ const Game = () => {
   };
 
   const checkWinner = (arr, player) => {
-    return arr.length === 1 ? player : "";
+    // return arr.length === 1 ? player : "";
+        if(player == "Player 2") {
+      // let data
+       axios.post('http://localhost:3000/history',{win : 1, lose : 0, name : enemy},{
+        headers : { Authorization : `Bearer ${localStorage.access_token}`}
+      })
+       axios.post('http://localhost:3000/history',{win : 0, lose : 1, name : current},{
+        headers : { Authorization : `Bearer ${localStorage.access_token}`}
+      })
+      return arr.length === 1 ? enemy : "";
+    } else if (player == "Player 1"){
+       axios.post('http://localhost:3000/history',{win : 1, lose : 0, name : current},{
+        headers : { Authorization : `Bearer ${localStorage.access_token}`}
+      })
+       axios.post('http://localhost:3000/history',{win : 0, lose : 1, name : enemy},{
+        headers : { Authorization : `Bearer ${localStorage.access_token}`}
+      })
+      return arr.length === 1 ? current : "";
+    }
   };
 
   const toggleChatBox = () => {

@@ -1,4 +1,4 @@
-const { verifyToken } = require("../helper/jwt");
+const { verifyToken } = require("../helpers/jwt");
 const { User } = require('../models')
 
 const authentication = async (req, res, next) => {
@@ -20,8 +20,6 @@ const authentication = async (req, res, next) => {
 
         req.loginInfo = {
             userId : user.id,
-            email : user.email,
-            role : user.role
         }
 
         next()

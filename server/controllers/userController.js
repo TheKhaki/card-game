@@ -1,4 +1,4 @@
-const { User } = require("../models/index");
+const { User, History } = require("../models/index");
 const { comparePassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
 
@@ -12,6 +12,11 @@ class UserController {
         password,
       });
 
+      const history = await History.create({
+        win : 0,
+        lose : 0,
+        UserId : newUser.id
+      })
       res.status(201).json({ newUser });
     } catch (error) {
       console.log(error);
