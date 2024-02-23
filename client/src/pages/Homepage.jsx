@@ -10,38 +10,61 @@ import { useEffect } from "react";
 
 const Homepage = () => {
   const [roomCode, setRoomCode] = useState("");
-  const {currenthistory, handlehistory} = useContext(historyContext)
-  const socket = io("http://localhost:3000", {
-    autoConnect: false,
-  });
-  console.log(socket);
-  const navigate = useNavigate()
-  useEffect(()=> {
-    handlehistory()
-  },[])
+  const { currenthistory, handlehistory } = useContext(historyContext);
+  const socket = io("http://localhost:3000");
+
+  const user = localStorage.getItem("username");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    handlehistory();
+    socket.connect();
+    socket.emit("player", user);
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
   // console.log(currenthistory);
 
-  
-
-
   function handleLogout() {
-    localStorage.clear()
+    localStorage.clear();
     Swal.fire({
       title: "Logged Out",
       icon: "success",
       showConfirmButton: false,
       timer: 1200,
     });
-    navigate('/login')
+    navigate("/login");
   }
   return (
     <div className="Homepage">
-          <button className="btn btn-error" onClick={handleLogout}>Logout</button>
+      <button className="btn btn-error" onClick={handleLogout}>
+        Logout
+      </button>
       <div className="homepage-menu flex justify-center h-1/2 ">
         <div className="bg-black/85 w-1/2 rounded-xl justify-center	mt-8">
-          <p className="flex justify-center text-2xl mt-2 text-yellow-400">Welcome {localStorage.username}, let's play!</p>
-         {currenthistory.history.win !== 0 && currenthistory.history.lose !==0 ? <p className="flex justify-center text-xl mt-2 text-white">Your total match is {+currenthistory.history.win + +currenthistory.history.lose}, with win rate {Math.floor(+currenthistory.history.win / (+currenthistory.history.win + +currenthistory.history.lose) * 100)}%</p> : <p>Your total match is 0, let's play</p>} 
-          
+          <p className="flex justify-center text-2xl mt-2 text-yellow-400">
+            Welcome {localStorage.username}, let's play!
+          </p>
+          {currenthistory?.history?.win !== 0 &&
+          currenthistory?.history?.lose !== 0 ? (
+            <p className="flex justify-center text-xl mt-2 text-white">
+              Your total match is{" "}
+              {+currenthistory?.history?.win + +currenthistory?.history?.lose},
+              with win rate{" "}
+              {Math.floor(
+                (+currenthistory?.history?.win /
+                  (+currenthistory?.history?.win +
+                    +currenthistory?.history?.lose)) *
+                  100
+              )}
+              %
+            </p>
+          ) : (
+            <p>Your total match is 0, let's play</p>
+          )}
+
           {/* <img src="../assets/logo1.png" width="50px" /> */}
           <div className="homepage-form">
             <div className="homepage-join mt-10 mx-4 ">

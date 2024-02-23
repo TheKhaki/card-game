@@ -3,7 +3,7 @@ import PACK_OF_CARDS from "../utils/packOfCards";
 import shuffleArray from "../utils/shuffleArray";
 import io from "socket.io-client";
 import queryString from "query-string";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import axios from "axios";
 // import Spinner from './Spinner'
 import Spinner from "../components/Spinner.jsx";
@@ -26,6 +26,7 @@ import gameOverSound from "../assets/sounds/game-over-sound.mp3";
 
 let socket;
 const ENDPOINT = "http://localhost:3000";
+const user = localStorage.getItem("username");
 
 const playcard = (name) => {
   return new URL(`../assets/cards-front/${name}.png`, import.meta.url).href;
@@ -56,6 +57,7 @@ const Game = () => {
       transports: ["websocket"],
     };
     socket = io.connect(ENDPOINT, connectionOptions);
+    socket.emit("player", user);
 
     socket.emit(
       "join",
@@ -68,11 +70,13 @@ const Game = () => {
     //cleanup on component unmount
     return function cleanup() {
       socket.disconnect();
+      socket.emit("player", user);
+
       socket.emit("disconnected");
       //shut down connnection instance
       socket.off();
     };
-  }, []);
+  }, [room]);
 
   //initialize game state
   const [gameOver, setGameOver] = useState(true);
@@ -105,10 +109,10 @@ const Game = () => {
     const shuffledCards = shuffleArray(PACK_OF_CARDS);
 
     //extract first 7 elements to player1Deck
-    const player1Deck = shuffledCards.splice(0, 1);
+    const player1Deck = shuffledCards.splice(0, 7);
 
     //extract first 7 elements to player2Deck
-    const player2Deck = shuffledCards.splice(0, 1);
+    const player2Deck = shuffledCards.splice(0, 7);
 
     //extract random card from shuffledCards and check if its not an action card
     let startingCardIndex;
@@ -208,22 +212,30 @@ const Game = () => {
       setUsers(users);
     });
 
+    socket.on("usersData", ({ player1, player2 }) => {
+      setCurrent(player2);
+      setEnemy(player1);
+      if (current !== localStorage.username) {
+        setCurrent(player1);
+        setEnemy(player2);
+      }
+    });
+
     socket.on("currentUserData", ({ name, player1, player2 }) => {
       console.log(name);
       console.log(player1);
       console.log(player2);
       setCurrentUser(name);
-        setCurrent(player2);
-        setEnemy(player1);
-        if (current !== localStorage.username) {
-          setCurrent(player1);
-          setEnemy(player2);
-        }
+      setCurrent(player2);
+      setEnemy(player1);
+      if (current !== localStorage.username) {
+        setCurrent(player1);
+        setEnemy(player2);
+      }
 
-        if(!player2) {
-          setCurrent(localStorage.username);
-  
-        }
+      if (!player2) {
+        setCurrent(localStorage.username);
+      }
     });
 
     socket.on("message", (message) => {
@@ -241,22 +253,38 @@ const Game = () => {
 
   const checkWinner = (arr, player) => {
     // return arr.length === 1 ? player : "";
-        if(player == "Player 2") {
+    if (player == "Player 2") {
       // let data
-       axios.post('http://localhost:3000/history',{win : 1, lose : 0, name : enemy},{
-        headers : { Authorization : `Bearer ${localStorage.access_token}`}
-      })
-       axios.post('http://localhost:3000/history',{win : 0, lose : 1, name : current},{
-        headers : { Authorization : `Bearer ${localStorage.access_token}`}
-      })
+      axios.post(
+        "http://localhost:3000/history",
+        { win: 1, lose: 0, name: enemy },
+        {
+          headers: { Authorization: `Bearer ${localStorage.access_token}` },
+        }
+      );
+      axios.post(
+        "http://localhost:3000/history",
+        { win: 0, lose: 1, name: current },
+        {
+          headers: { Authorization: `Bearer ${localStorage.access_token}` },
+        }
+      );
       return arr.length === 1 ? enemy : "";
-    } else if (player == "Player 1"){
-       axios.post('http://localhost:3000/history',{win : 1, lose : 0, name : current},{
-        headers : { Authorization : `Bearer ${localStorage.access_token}`}
-      })
-       axios.post('http://localhost:3000/history',{win : 0, lose : 1, name : enemy},{
-        headers : { Authorization : `Bearer ${localStorage.access_token}`}
-      })
+    } else if (player == "Player 1") {
+      axios.post(
+        "http://localhost:3000/history",
+        { win: 1, lose: 0, name: current },
+        {
+          headers: { Authorization: `Bearer ${localStorage.access_token}` },
+        }
+      );
+      axios.post(
+        "http://localhost:3000/history",
+        { win: 0, lose: 1, name: enemy },
+        {
+          headers: { Authorization: `Bearer ${localStorage.access_token}` },
+        }
+      );
       return arr.length === 1 ? current : "";
     }
   };
@@ -605,7 +633,8 @@ const Game = () => {
             //if not pressed add 2 cards as penalty
             if (player1Deck.length === 2 && !isUnoButtonPressed) {
               Swal.fire({
-                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                title:
+                  "Oops! You forgot to press UNO. You drew 2 cards as penalty",
                 icon: "warning",
                 showConfirmButton: false,
                 timer: 1200,
@@ -666,7 +695,8 @@ const Game = () => {
             //if not pressed add 2 cards as penalty
             if (player2Deck.length === 2 && !isUnoButtonPressed) {
               Swal.fire({
-                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                title:
+                  "Oops! You forgot to press UNO. You drew 2 cards as penalty",
                 icon: "warning",
                 showConfirmButton: false,
                 timer: 1200,
@@ -733,7 +763,8 @@ const Game = () => {
             //if not pressed add 2 cards as penalty
             if (player1Deck.length === 2 && !isUnoButtonPressed) {
               Swal.fire({
-                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                title:
+                  "Oops! You forgot to press UNO. You drew 2 cards as penalty",
                 icon: "warning",
                 showConfirmButton: false,
                 timer: 1200,
@@ -794,7 +825,8 @@ const Game = () => {
             //if not pressed add 2 cards as penalty
             if (player2Deck.length === 2 && !isUnoButtonPressed) {
               Swal.fire({
-                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                title:
+                  "Oops! You forgot to press UNO. You drew 2 cards as penalty",
                 icon: "warning",
                 showConfirmButton: false,
                 timer: 1200,
@@ -886,7 +918,8 @@ const Game = () => {
             //if not pressed add 2 cards as penalty
             if (player1Deck.length === 2 && !isUnoButtonPressed) {
               Swal.fire({
-                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                title:
+                  "Oops! You forgot to press UNO. You drew 2 cards as penalty",
                 icon: "warning",
                 showConfirmButton: false,
                 timer: 1200,
@@ -964,7 +997,8 @@ const Game = () => {
             //if not pressed add 2 cards as penalty
             if (player2Deck.length === 2 && !isUnoButtonPressed) {
               Swal.fire({
-                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                title:
+                  "Oops! You forgot to press UNO. You drew 2 cards as penalty",
                 icon: "warning",
                 showConfirmButton: false,
                 timer: 1200,
@@ -1048,7 +1082,8 @@ const Game = () => {
             //if not pressed add 2 cards as penalty
             if (player1Deck.length === 2 && !isUnoButtonPressed) {
               Swal.fire({
-                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                title:
+                  "Oops! You forgot to press UNO. You drew 2 cards as penalty",
                 icon: "warning",
                 showConfirmButton: false,
                 timer: 1200,
@@ -1126,7 +1161,8 @@ const Game = () => {
             //if not pressed add 2 cards as penalty
             if (player2Deck.length === 2 && !isUnoButtonPressed) {
               Swal.fire({
-                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                title:
+                  "Oops! You forgot to press UNO. You drew 2 cards as penalty",
                 icon: "warning",
                 showConfirmButton: false,
                 timer: 1200,
@@ -1219,7 +1255,8 @@ const Game = () => {
           //if not pressed add 2 cards as penalty
           if (player1Deck.length === 2 && !isUnoButtonPressed) {
             Swal.fire({
-              title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+              title:
+                "Oops! You forgot to press UNO. You drew 2 cards as penalty",
               icon: "warning",
               showConfirmButton: false,
               timer: 1200,
@@ -1286,7 +1323,8 @@ const Game = () => {
           //if not pressed add 2 cards as penalty
           if (player2Deck.length === 2 && !isUnoButtonPressed) {
             Swal.fire({
-              title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+              title:
+                "Oops! You forgot to press UNO. You drew 2 cards as penalty",
               icon: "warning",
               showConfirmButton: false,
               timer: 1200,
@@ -1368,7 +1406,8 @@ const Game = () => {
             //if not pressed add 2 cards as penalty
             if (player1Deck.length === 2 && !isUnoButtonPressed) {
               Swal.fire({
-                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                title:
+                  "Oops! You forgot to press UNO. You drew 2 cards as penalty",
                 icon: "warning",
                 showConfirmButton: false,
                 timer: 1200,
@@ -1482,7 +1521,8 @@ const Game = () => {
             //if not pressed add 2 cards as penalty
             if (player2Deck.length === 2 && !isUnoButtonPressed) {
               Swal.fire({
-                title: "Oops! You forgot to press UNO. You drew 2 cards as penalty",
+                title:
+                  "Oops! You forgot to press UNO. You drew 2 cards as penalty",
                 icon: "warning",
                 showConfirmButton: false,
                 timer: 1200,
@@ -1671,7 +1711,7 @@ const Game = () => {
         //   }
         // }
         // pickColor()
-        
+
         const newColor = prompt(
           "Enter first letter of new color (R/G/B/Y)"
         ).toUpperCase();
@@ -2051,9 +2091,21 @@ const Game = () => {
                 onClick={() => setSoundMuted(!isSoundMuted)}
               >
                 {isSoundMuted ? (
-                  <span className="material-icons"><img src="../assets/sound-off.png" className="size-6"alt="" /></span>
+                  <span className="material-icons">
+                    <img
+                      src="../assets/sound-off.png"
+                      className="size-6"
+                      alt=""
+                    />
+                  </span>
                 ) : (
-                  <span className="material-icons"><img src="../assets/sound-on.png" className="size-6"alt="" /></span>
+                  <span className="material-icons">
+                    <img
+                      src="../assets/sound-on.png"
+                      className="size-6"
+                      alt=""
+                    />
+                  </span>
                 )}
               </button>
               <button
@@ -2065,9 +2117,23 @@ const Game = () => {
                 }}
               >
                 {isMusicMuted ? (
-                  <span className="material-icons flex"><img src="../assets/sound-off.png" className="size-6 mr-2"alt="" />music off</span>
+                  <span className="material-icons flex">
+                    <img
+                      src="../assets/sound-off.png"
+                      className="size-6 mr-2"
+                      alt=""
+                    />
+                    music off
+                  </span>
                 ) : (
-                  <span className="material-icons flex"><img src="../assets/sound-on.png" className="size-6 mr-2"alt="" />music on</span>
+                  <span className="material-icons flex">
+                    <img
+                      src="../assets/sound-on.png"
+                      className="size-6 mr-2"
+                      alt=""
+                    />
+                    music on
+                  </span>
                 )}
               </button>
             </span>
@@ -2181,20 +2247,20 @@ const Game = () => {
                                 className="material-icons mx-4"
                               >
                                 <img
-                            src="../assets/arrow-up.png"
-                            className="size-6 mx-4"
-                          />
-                                
+                                  src="../assets/arrow-up.png"
+                                  className="size-6 mx-4"
+                                />
                               </button>
                             ) : (
                               <button
                                 onClick={toggleChatBox}
                                 className="material-icons "
-                              > <img
-                              src="../assets/arrow-up.png"
-                              className="size-6 mx-4"
-                            />
-                               
+                              >
+                                {" "}
+                                <img
+                                  src="../assets/arrow-up.png"
+                                  className="size-6 mx-4"
+                                />
                               </button>
                             )}
                           </div>
@@ -2317,20 +2383,20 @@ const Game = () => {
                                 className="material-icons mx-4"
                               >
                                 <img
-                            src="../assets/arrow-up.png"
-                            className="size-6 mx-4"
-                          />
-                                
+                                  src="../assets/arrow-up.png"
+                                  className="size-6 mx-4"
+                                />
                               </button>
                             ) : (
                               <button
                                 onClick={toggleChatBox}
                                 className="material-icons "
-                              > <img
-                              src="../assets/arrow-up.png"
-                              className="size-6 mx-4"
-                            />
-                               
+                              >
+                                {" "}
+                                <img
+                                  src="../assets/arrow-up.png"
+                                  className="size-6 mx-4"
+                                />
                               </button>
                             )}
                           </div>
@@ -2379,10 +2445,15 @@ const Game = () => {
       <br />
 
       <div className="flex justify-center">
-      <a href="/">
-        <button className="" onClick={() => socket.emit('disconnected')}><img className="w-24 h-16 mx-auto"src="../assets/exit-icon.png" alt="" /></button>
-      </a>
-
+        <a href="/">
+          <button className="" onClick={() => socket.emit("disconnected")}>
+            <img
+              className="w-24 h-16 mx-auto"
+              src="../assets/exit-icon.png"
+              alt=""
+            />
+          </button>
+        </a>
       </div>
     </div>
   );

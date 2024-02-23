@@ -1,21 +1,31 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import io from "socket.io-client";
+
 import Swal from "sweetalert2";
 // import { GoogleLogin } from "@react-oauth/google";
 
-import { Card, Input, Checkbox, Button, Typography } from "@material-tailwind/react";
+import {
+  Card,
+  Input,
+  Checkbox,
+  Button,
+  Typography,
+} from "@material-tailwind/react";
 
 export default function Login() {
   const [form, setForm] = useState({
-    username : "",
-    password : ""
-  })
+    username: "",
+    password: "",
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const url = "https://server.esyaahmad.tech";
-
+  const socket = io("http://localhost:3000", {
+    autoConnect: false,
+  });
+  const url = "localhost:3000";
 
   // async function handleLogin(e) {
   //   e.preventDefault();
@@ -72,30 +82,37 @@ export default function Login() {
   }
 
   async function handleLogin(e, form) {
-    e.preventDefault()
+    e.preventDefault();
     try {
-        const {data} = await axios.post('http://localhost:3000/login', form, {})
-        console.log(data);
-        localStorage.setItem('username', data.username)
-        localStorage.setItem('access_token', data.access_token)
-        navigate('/')
+      const { data } = await axios.post(
+        "http://localhost:3000/login",
+        form,
+        {}
+      );
+      localStorage.setItem("username", data.username);
+      localStorage.setItem("access_token", data.access_token);
+      const user = localStorage.getItem("username");
+      socket.connect();
+      socket.emit("player", user);
+      socket.disconnect();
+      navigate("/");
     } catch (error) {
       console.log(error);
       Swal.fire({
         icon: "error",
-        text : error.errors[0].message,
+        text: error.errors[0].message,
         title: "error",
       });
     }
   }
 
   function handleChange(e) {
-    e.preventDefault()
-    const { name, value } = e.target
+    e.preventDefault();
+    const { name, value } = e.target;
     setForm({
       ...form,
-      [name] : value
-    })
+      [name]: value,
+    });
   }
   console.log(form);
   return (
@@ -106,14 +123,25 @@ export default function Login() {
             <Typography variant="h2" className="font-bold mb-4 text-black">
               Sign In
             </Typography>
-            <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal"  >
+            <Typography
+              variant="paragraph"
+              color="blue-gray"
+              className="text-lg font-normal"
+            >
               Enter your email and password to Sign In.
               {/* onSubmit={handleLogin} */}
             </Typography>
           </div>
-          <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2" onSubmit={(e) => handleLogin(e, form)}>
+          <form
+            className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2"
+            onSubmit={(e) => handleLogin(e, form)}
+          >
             <div className="mb-1 flex flex-col gap-6">
-              <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
+              <Typography
+                variant="small"
+                color="blue-gray"
+                className="-mb-3 font-medium"
+              >
                 Username
               </Typography>
               <Input
@@ -126,7 +154,11 @@ export default function Login() {
                   className: "before:content-none after:content-none",
                 }}
               />
-              <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
+              <Typography
+                variant="small"
+                color="blue-gray"
+                className="-mb-3 font-medium"
+              >
                 Password
               </Typography>
               <Input
@@ -146,19 +178,28 @@ export default function Login() {
               Sign In
             </Button>
 
-         <br />
-         <br />
-         <br />
+            <br />
+            <br />
+            <br />
             <div className="space-y-4 mt-8">
               {/* <Button size="lg" color="white" className="flex items-center gap-2 justify-center shadow-md" fullWidth>
                 <GoogleLogin onSuccess={googleLogin} />
               </Button> */}
-              <Button onClick={handleGithub} size="lg" color="white" className="flex items-center gap-2 justify-center shadow-md" fullWidth>
+              <Button
+                onClick={handleGithub}
+                size="lg"
+                color="white"
+                className="flex items-center gap-2 justify-center shadow-md"
+                fullWidth
+              >
                 <img src="/assets/25231.png" height={24} width={24} alt="" />
                 <span>Sign in With Github</span>
               </Button>
             </div>
-            <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
+            <Typography
+              variant="paragraph"
+              className="text-center text-blue-gray-500 font-medium mt-4"
+            >
               Not registered?
               <Link to="/register" className="text-gray-900 ml-1">
                 Create account
@@ -167,7 +208,10 @@ export default function Login() {
           </form>
         </div>
         <div className="w-2/5 h-auto max-h-[660px] hidden lg:block">
-          <img src="/assets/OPE.jpg" className="h-full w-full object-cover rounded-3xl" />
+          <img
+            src="/assets/OPE.jpg"
+            className="h-full w-full object-cover rounded-3xl"
+          />
         </div>
       </section>
 
