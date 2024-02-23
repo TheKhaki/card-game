@@ -25,7 +25,6 @@ io.on("connection", (socket) => {
     if (usernames.includes(data) === false) {
       usernames.push(data);
     }
-    console.log(usernames, "<<<<<<<<<<<<<<");
   });
 
   socket.on("join", (payload, callback) => {
@@ -39,7 +38,6 @@ io.on("connection", (socket) => {
       usernames.push(payload.playerName);
     }
 
-    console.log(usernames);
     const { error, newUser } = addUser({
       id: socket.id,
       name: numberOfUsersInRoom === 0 ? "Player 1" : "Player 2",
@@ -68,6 +66,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("initGameState", (gameState) => {
+    socket.emit("usersData", {
+      player1: usernames[0],
+      player2: usernames[1],
+    });
+
     const user = getUser(socket.id);
     if (user) io.to(user.room).emit("initGameState", gameState);
   });
@@ -93,10 +96,6 @@ io.on("connection", (socket) => {
         room: user.room,
         users: getUsersInRoom(user.room),
       });
-
-    if (usernames.includes(user.name) === false) {
-      usernames.push(user.name);
-    }
   });
 });
 
