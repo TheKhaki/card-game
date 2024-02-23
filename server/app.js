@@ -77,6 +77,10 @@ io.on("connection", (socket) => {
 
   socket.on("updateGameState", (gameState) => {
     const user = getUser(socket.id);
+    socket.emit("usersData", {
+      player1: usernames[0],
+      player2: usernames[1],
+    });
     if (user) io.to(user.room).emit("updateGameState", gameState);
   });
 

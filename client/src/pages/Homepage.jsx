@@ -69,7 +69,7 @@ const Homepage = () => {
           <div className="homepage-form">
             <div className="homepage-join mt-10 mx-4 ">
               <input
-                className="text-white rounded-md m-auto my-4 "
+                className="text-black rounded-md m-auto my-4 "
                 type="text"
                 placeholder="Game Code"
                 onChange={(event) => setRoomCode(event.target.value)}

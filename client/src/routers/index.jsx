@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import Homepage from "../pages/Homepage";
@@ -14,18 +14,42 @@ const router = createBrowserRouter(
     {
       path: "/register",
       element: <Register />,
+      loader: () => {
+        if (localStorage.access_token) {
+          return redirect("/");
+        }
+        return null;
+      },
     },
     {
       path: "/login",
       element: <Login />,
+      loader: () => {
+        if (localStorage.access_token) {
+          return redirect("/");
+        }
+        return null;
+      },
     },
     {
       path: "/",
       element: <Homepage />,
+      loader: () => {
+        if (!localStorage.access_token) {
+          return redirect("/login");
+        }
+        return null;
+      },
     },
     {
       path: "/play",
       element: <Game />,
+      loader: () => {
+        if (!localStorage.access_token) {
+          return redirect("/login");
+        }
+        return null;
+      },
     },
     // {
     //     path : '*',
